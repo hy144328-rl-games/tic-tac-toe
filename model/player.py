@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import abc
+import collections
 
 from . import Move
 from .grid import Grid
@@ -37,4 +38,36 @@ class StraightPlayer(IntelligentPlayer):
             key = lambda x: 3 * x[0] + x[1],
         )
         self.move(*valid_moves[0])
+
+class ProbabilisticPlayer(IntelligentPlayer):
+    def __init__(self):
+        super().__init__()
+
+        self.table: dict[str, float] = collections.defaultdict(lambda: 0.5)
+
+    def play(self):
+        valid_moves = self.grid.valid_moves
+
+        valid_moves_key = sorted(
+            valid_moves,
+            key = lambda x: 3 * x[0] + x[1],
+        )
+
+        valid_moves_value = []
+        for move_it in valid_moves_key:
+            grid_it = Grid(self.grid)
+            grid_it.move(self.turn, *move_it)
+            valid_moves_value.append(self.table[repr(grid_it)])
+
+        valid_moves_dict = dict(zip(
+            valid_moves_key,
+            valid_moves_value,
+        ))
+
+        move = max(
+            valid_moves_dict,
+            key = lambda k: valid_moves_dict[k],
+        )
+
+        self.move(*move)
 

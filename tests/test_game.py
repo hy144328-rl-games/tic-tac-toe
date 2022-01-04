@@ -59,9 +59,9 @@ class TestIntelligentGame(TestGame):
     def game(
         self,
         grid: model_grid.Grid,
-        player_1: model_player.StraightPlayer,
-        player_2: model_player.StraightPlayer,
-    ) -> model_game.Game:
+        player_1: model_player.IntelligentPlayer,
+        player_2: model_player.IntelligentPlayer,
+    ) -> model_game.IntelligentGame:
         game = model_game.IntelligentGame()
 
         game.set_grid(grid)
