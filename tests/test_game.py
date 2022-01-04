@@ -9,16 +9,28 @@ from model import game as model_game
 
 class TestGame:
     @pytest.fixture
-    def game(self) -> model_game.Game:
+    def grid(self) -> model_grid.Grid:
+        return model_grid.Grid()
+
+    @pytest.fixture
+    def player_1(self) -> model_player.Player:
+        return model_player.Player()
+
+    @pytest.fixture
+    def player_2(self) -> model_player.Player:
+        return model_player.Player()
+
+    @pytest.fixture
+    def game(
+        self,
+        grid: model_grid.Grid,
+        player_1: model_player.Player,
+        player_2: model_player.Player,
+    ) -> model_game.Game:
         game = model_game.Game()
 
-        grid = model_grid.Grid()
         game.set_grid(grid)
-
-        player_1 = model_player.Player()
         game.set_player_1(player_1)
-
-        player_2 = model_player.Player()
         game.set_player_2(player_2)
 
         return game
