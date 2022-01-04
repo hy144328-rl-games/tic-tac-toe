@@ -43,6 +43,15 @@ class Grid:
 
         return False
 
+    @property
+    def valid_moves(self) -> set[tuple[int, int]]:
+        return set(
+            (i, j)
+            for i in range(3)
+            for j in range(3)
+            if self.state[i, j] == Move.NONE
+        )
+
     def __repr__(self) -> str:
         return "".join([self.state[i, j].value for i in range(3) for j in range(3)])
 

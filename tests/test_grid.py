@@ -28,3 +28,16 @@ class TestGrid:
         grid.move(model.Move.ONE, 2, 2)
         assert grid.in_line(model.Move.ONE) is True
 
+    def test_valid_moves(self, grid: model_grid.Grid):
+        for i in range(3):
+            grid.move(model.Move.ONE, i, i)
+
+        sol = set(
+            (i, j)
+            for i in range(3)
+            for j in range(3)
+            if i != j
+        )
+
+        assert grid.valid_moves == sol
+
