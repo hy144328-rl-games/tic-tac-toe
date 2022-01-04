@@ -26,48 +26,65 @@ class Player:
         return self.grid.in_line(self.turn)
 
 class IntelligentPlayer(Player, abc.ABC):
-    @abc.abstractmethod
-    def play(self):
-        ...
-
-class StraightPlayer(IntelligentPlayer):
-    def play(self):
+    @property
+    def valid_moves(self) -> list[tuple[int, int]]:
         valid_moves = self.grid.valid_moves
         valid_moves = sorted(
             valid_moves,
             key = lambda x: 3 * x[0] + x[1],
         )
-        self.move(*valid_moves[0])
+        return valid_moves
+
+    @abc.abstractmethod
+    def pick_move(
+        self,
+        moves: list[tuple[int, int]],
+    ) -> tuple[int, int]:
+        ...
+
+    def play(self):
+        valid_moves = self.valid_moves
+        move = self.pick_move(valid_moves)
+        self.move(*move)
+
+class StraightPlayer(IntelligentPlayer):
+    def pick_move(
+        self,
+        moves: list[tuple[int, int]],
+    ) -> tuple[int, int]:
+        return moves[0]
+
+class RewardTable:
+    def __init__(self):
+        self.table: dict[str, float] = collections.defaultdict(lambda: 0.5)
+
+    def get(
+        self,
+        grid: Grid,
+        move: tuple[int, int] = None,
+        turn: Move = None,
+    ) -> float:
+        if move is None and turn is None:
+            grid = Grid(grid)
+            grid.move(turn, *move)
+
+        return self.table[repr(grid)]
 
 class ProbabilisticPlayer(IntelligentPlayer):
     def __init__(self):
         super().__init__()
+        self.table: RewardTable = RewardTable()
 
-        self.table: dict[str, float] = collections.defaultdict(lambda: 0.5)
-
-    def play(self):
-        valid_moves = self.grid.valid_moves
-
-        valid_moves_key = sorted(
-            valid_moves,
-            key = lambda x: 3 * x[0] + x[1],
+    def pick_move(
+        self,
+        moves: list[tuple[int, int]],
+    ) -> tuple[int, int]:
+        return max(
+            moves,
+            key = lambda move: self.table.get(
+                self.grid,
+                move,
+                self.turn,
+            ),
         )
-
-        valid_moves_value = []
-        for move_it in valid_moves_key:
-            grid_it = Grid(self.grid)
-            grid_it.move(self.turn, *move_it)
-            valid_moves_value.append(self.table[repr(grid_it)])
-
-        valid_moves_dict = dict(zip(
-            valid_moves_key,
-            valid_moves_value,
-        ))
-
-        move = max(
-            valid_moves_dict,
-            key = lambda k: valid_moves_dict[k],
-        )
-
-        self.move(*move)
 
