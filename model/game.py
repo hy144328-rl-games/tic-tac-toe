@@ -5,13 +5,16 @@ from .grid import Grid
 from .player import Player
 
 class Game:
-    def __init__(self):
-        self.grid = Grid()
-        self.player_1 = Player()
-        self.player_2 = Player()
+    def set_grid(self, grid: Grid):
+        self.grid: Grid = Grid()
 
+    def set_player_1(self, player: Player):
+        self.player_1: Player = player
         self.player_1.set_grid(self.grid, Move.ONE)
-        self.player_2.set_grid(self.grid, Move.TWO)
+
+    def set_player_2(self, player: Player):
+        self.player_2: Player = player
+        self.player_2.set_grid(self.grid, Move.ONE)
 
     @property
     def is_finished(self) -> bool:
