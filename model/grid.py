@@ -9,8 +9,11 @@ class Grid:
     col_sep = "|"
     row_sep = "\n" + (5 + 6 * no_pad) * "-" + "\n"
 
-    def __init__(self):
-        self.state: np.ndarray = np.full((3, 3), Move.NONE)
+    def __init__(self, grid: "Grid"=None):
+        if grid:
+            self.state: np.ndarray = grid.state.copy()
+        else:
+            self.state: np.ndarray = np.full((3, 3), Move.NONE)
 
     def set_player_1(self, player: "Player"):
         player.turn: Move = Move.ONE

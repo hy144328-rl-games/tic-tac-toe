@@ -12,6 +12,30 @@ class TestGrid:
     def grid(self) -> model_grid.Grid:
         return model_grid.Grid()
 
+    def test_copy(self, grid: model_grid.Grid):
+        grid.move(model.Move.ONE, 1, 1)
+        assert repr(grid) == (
+            4 * model.Move.NONE.value
+            + model.Move.ONE.value
+            + 4 * model.Move.NONE.value
+        )
+
+        grid_copy = model_grid.Grid(grid)
+        grid_copy.move(model.Move.ONE, 0, 0)
+        grid_copy.move(model.Move.ONE, 2, 2)
+        assert repr(grid) == (
+            4 * model.Move.NONE.value
+            + model.Move.ONE.value
+            + 4 * model.Move.NONE.value
+        )
+        assert repr(grid_copy) == (
+            model.Move.ONE.value
+            + 3 * model.Move.NONE.value
+            + model.Move.ONE.value
+            + 3 * model.Move.NONE.value
+            + model.Move.ONE.value
+        )
+
     def test_move(self, grid: model_grid.Grid):
         grid.move(model.Move.ONE, 1, 1)
         assert repr(grid) == (
