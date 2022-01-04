@@ -65,3 +65,32 @@ class TestPlayer:
         assert player_1.is_winner is True
         assert player_2.is_winner is False
 
+class TestStraightPlayer(TestPlayer):
+    def straight_player_(
+        self,
+        grid: model_grid.Grid,
+        turn: model.Move,
+    ) -> model_player.StraightPlayer:
+        player = model_player.StraightPlayer()
+        player.set_grid(grid, turn)
+        return player
+
+    @pytest.fixture
+    def straight_player_1(self, grid: model_grid.Grid) -> model_player.StraightPlayer:
+        return self.straight_player_(grid, model.Move.ONE)
+
+    @pytest.fixture
+    def straight_player_2(self, grid: model_grid.Grid) -> model_player.StraightPlayer:
+        return self.straight_player_(grid, model.Move.TWO)
+
+    def test_play(
+        self,
+        grid: model_grid.Grid,
+        straight_player_1: model_player.StraightPlayer,
+    ):
+        straight_player_1.play()
+        assert repr(grid) == (
+            model.Move.ONE.value
+            + 8 * model.Move.NONE.value
+        )
+

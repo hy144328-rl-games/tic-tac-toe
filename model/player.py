@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import abc
+
 from . import Move
 from .grid import Grid
 
@@ -21,4 +23,18 @@ class Player:
     @property
     def is_winner(self) -> bool:
         return self.grid.in_line(self.turn)
+
+class IntelligentPlayer(Player, abc.ABC):
+    @abc.abstractmethod
+    def play(self):
+        ...
+
+class StraightPlayer(IntelligentPlayer):
+    def play(self):
+        valid_moves = self.grid.valid_moves
+        valid_moves = sorted(
+            valid_moves,
+            key = lambda x: 3 * x[0] + x[1],
+        )
+        self.move(*valid_moves[0])
 
