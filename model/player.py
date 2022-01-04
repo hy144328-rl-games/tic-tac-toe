@@ -65,7 +65,7 @@ class RewardTable:
         move: tuple[int, int] = None,
         turn: Move = None,
     ) -> float:
-        if move is None and turn is None:
+        if move is not None and turn is not None:
             grid = Grid(grid)
             grid.move(turn, *move)
 
@@ -74,15 +74,15 @@ class RewardTable:
     def set(
         self,
         grid: Grid,
-        value: float,
+        val: float,
         move: tuple[int, int] = None,
         turn: Move = None,
     ) -> float:
-        if move is None and turn is None:
+        if move is not None and turn is not None:
             grid = Grid(grid)
             grid.move(turn, *move)
 
-        self.table[repr(grid)] = float
+        self.table[repr(grid)] = val
 
 class ProbabilisticPlayer(IntelligentPlayer):
     def __init__(self):
@@ -105,9 +105,7 @@ class ProbabilisticPlayer(IntelligentPlayer):
 class TemporalDifferencePlayer(ProbabilisticPlayer):
     def __init__(self, train: bool=False):
         super().__init__()
-        self.alpha: float = 0.1
         self.train: bool = train
-        self.last_grid: Grid = None
 
     def pick_move(
         self,
@@ -116,17 +114,6 @@ class TemporalDifferencePlayer(ProbabilisticPlayer):
         max_move = super().pick_move(moves)
         if not self.train:
             return max_move
-
-        if np.sum(self.grid.state != Move.NONE) < 2:
-            self.last_grid = None
-
-        if self.last_grid:
-            last_val = self.table.get(self.last_grid)
-            val = self.table.get(self.grid)
-            self.table.set(
-                self.last_grid,
-                last_val + alpha * (val - last_val),
-            )
 
         weights = [
             self.table.get(
@@ -137,9 +124,6 @@ class TemporalDifferencePlayer(ProbabilisticPlayer):
             for move in moves
         ]
         random_move = random.choices(moves, weights)[0]
-
-        if random_move == max_move:
-            self.last_grid = Grid(self.grid)
 
         return random_move
 
