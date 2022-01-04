@@ -28,6 +28,25 @@ class Grid:
 
         self.state[row, col] = turn
 
+    def in_line(self, turn: Move) -> bool:
+        # Rows.
+        for i in range(3):
+            if all(self.state[i, j] == turn for j in range(3)):
+                return True
+
+        # Columns.
+        for j in range(3):
+            if all(self.state[i, j] == turn for i in range(3)):
+                return True
+
+        # Diagonals.
+        if all(self.state[i, i] == turn for i in range(3)):
+            return True
+        if all(self.state[i, 2 - i] == turn for i in range(3)):
+            return True
+
+        return False
+
     def __repr__(self) -> str:
         return "".join([self.state[i, j].value for i in range(3) for j in range(3)])
 
@@ -62,6 +81,10 @@ class Player:
     def move(self, row: int, col: int):
         self.grid.move(self.turn, row, col)
 
+    @property
+    def is_winner(self) -> bool:
+        return self.grid.in_line(self.turn)
+
 class Game:
     def __init__(self):
         self.grid = Grid()
@@ -71,44 +94,21 @@ class Game:
         self.player_1.set_grid(self.grid, Move.ONE)
         self.player_2.set_grid(self.grid, Move.TWO)
 
-    def won_(self, move: Move) -> bool:
-        # Rows.
-        for i in range(3):
-            if all(self.grid[i, j] == move for j in range(3)):
-                return True
-
-        # Columns.
-        for j in range(3):
-            if all(self.grid[i, j] == move for i in range(3)):
-                return True
-
-        # Diagonals.
-        if all(self.grid[i, i] == move for i in range(3)):
-            return True
-        if all(self.grid[i, 2 - i] == move for i in range(3)):
-            return True
-
-        return False
-
     @property
-    def won_1(self) -> bool:
-        return self.won_(Move.ONE)
-
-    @property
-    def won_2(self) -> bool:
-        return self.won_(Move.TWO)
-
-    @property
-    def won(self) -> bool:
-        return self.won_1 or self.won_2
+    def is_finished(self) -> bool:
+        return (
+            all(self.grid[i, j] != Move.NONE for i in range(3) for j in range(3))
+            or self.player_1.is_winner
+            or self.player_2.is_winner
+        )
 
 if __name__ == "__main__":
     game = Game()
     print(game.grid)
-    print(game.won)
+    print(game.is_finished)
 
     for i in range(3):
         game.player_1.move(i, i)
     print(game.grid)
-    print(game.won)
+    print(game.is_finished)
 
