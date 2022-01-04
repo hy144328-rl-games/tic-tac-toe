@@ -68,10 +68,44 @@ class Game:
         self.player_1.set_grid(self.grid, Move.ONE)
         self.player_2.set_grid(self.grid, Move.TWO)
 
+    def won_(self, move: Move):
+        # Rows.
+        for i in range(3):
+            if all(self.grid.state[i, j] == move for j in range(3)):
+                return True
+
+        # Columns.
+        for j in range(3):
+            if all(self.grid.state[i, j] == move for i in range(3)):
+                return True
+
+        # Diagonals.
+        if all(self.grid.state[i, i] == move for i in range(3)):
+            return True
+        if all(self.grid.state[i, 2 - i] == move for i in range(3)):
+            return True
+
+        return False
+
+    @property
+    def won_1(self):
+        return self.won_(Move.ONE)
+
+    @property
+    def won_2(self):
+        return self.won_(Move.TWO)
+
+    @property
+    def won(self):
+        return self.won_1 or self.won_2
+
 if __name__ == "__main__":
     game = Game()
     print(game.grid)
+    print(game.won)
 
-    game.player_1.move(1, 1)
+    for i in range(3):
+        game.player_1.move(i, i)
     print(game.grid)
+    print(game.won)
 
