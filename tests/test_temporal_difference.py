@@ -11,38 +11,38 @@ from .test_game import TestIntelligentGame
 
 class TestProbabilisticGame1(TestIntelligentGame):
     @pytest.fixture
-    def player_1(self) -> model_player.StraightPlayer:
+    def player_1(self) -> model_player.IntelligentPlayer:
         return model_player.ProbabilisticPlayer()
 
 class TestProbabilisticGame2(TestIntelligentGame):
     @pytest.fixture
-    def player_2(self) -> model_player.StraightPlayer:
+    def player_2(self) -> model_player.IntelligentPlayer:
         return model_player.ProbabilisticPlayer()
 
 class TestProbabilisticGame12(TestProbabilisticGame1):
     @pytest.fixture
-    def player_2(self) -> model_player.StraightPlayer:
+    def player_2(self) -> model_player.IntelligentPlayer:
         return model_player.ProbabilisticPlayer()
 
 class TestTemporalDifferenceGame1(TestIntelligentGame):
     @pytest.fixture
-    def player_1(self) -> model_player.StraightPlayer:
+    def player_1(self) -> model_player.IntelligentPlayer:
         return model_player.TemporalDifferencePlayer()
 
 class TestTemporalDifferenceGame2(TestIntelligentGame):
     @pytest.fixture
-    def player_2(self) -> model_player.StraightPlayer:
+    def player_2(self) -> model_player.IntelligentPlayer:
         return model_player.TemporalDifferencePlayer()
 
 class TestTemporalDifferenceGame12(TestTemporalDifferenceGame1):
     @pytest.fixture
-    def player_2(self) -> model_player.StraightPlayer:
+    def player_2(self) -> model_player.IntelligentPlayer:
         return model_player.TemporalDifferencePlayer()
 
 class TestTemporalDifferenceGameTrain1(TestIntelligentGame):
     @pytest.fixture
-    def player_1(self) -> model_player.StraightPlayer:
-        return model_player.TemporalDifferencePlayer()
+    def player_1(self) -> model_player.IntelligentPlayer:
+        return model_player.TemporalDifferencePlayer(True)
 
     def test_simulate(
         self,

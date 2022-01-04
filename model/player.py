@@ -105,10 +105,14 @@ class ProbabilisticPlayer(IntelligentPlayer):
             ),
         )
 
-class TemporalDifferencePlayer(ProbabilisticPlayer):
+class Learning:
     def __init__(self, train: bool=False):
-        super().__init__()
         self.train: bool = train
+
+class TemporalDifferencePlayer(ProbabilisticPlayer, Learning):
+    def __init__(self, train: bool=False):
+        ProbabilisticPlayer.__init__(self)
+        Learning.__init__(self, train)
 
     def pick_move(
         self,
