@@ -55,6 +55,9 @@ class Grid:
             if self.state[i, j] == Move.NONE
         )
 
+    def reset(self):
+        self.state[:, :] = Move.NONE
+
     def __repr__(self) -> str:
         return "".join([self.state[i, j].value for i in range(3) for j in range(3)])
 

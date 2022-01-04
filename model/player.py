@@ -26,6 +26,9 @@ class Player:
     def is_winner(self) -> bool:
         return self.grid.in_line(self.turn)
 
+    def reset(self):
+        ...
+
 class IntelligentPlayer(Player, abc.ABC):
     @property
     def valid_moves(self) -> list[tuple[int, int]]:

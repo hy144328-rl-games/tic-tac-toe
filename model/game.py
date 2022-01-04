@@ -27,6 +27,11 @@ class Game:
             or self.player_2.is_winner
         )
 
+    def reset(self):
+        self.grid.reset()
+        self.player_1.reset()
+        self.player_2.reset()
+
 class IntelligentGame(Game, abc.ABC):
     def simulate(self):
         turns = itertools.cycle([self.player_1, self.player_2])

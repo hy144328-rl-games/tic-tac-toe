@@ -39,3 +39,19 @@ class TestTemporalDifferenceGame12(TestTemporalDifferenceGame1):
     def player_2(self) -> model_player.StraightPlayer:
         return model_player.TemporalDifferencePlayer()
 
+class TestTemporalDifferenceGameTrain1(TestIntelligentGame):
+    @pytest.fixture
+    def player_1(self) -> model_player.StraightPlayer:
+        return model_player.TemporalDifferencePlayer()
+
+    def test_simulate(
+        self,
+        game: model_game.Game,
+    ):
+        for _ in range(10):
+            game.reset()
+            game.simulate()
+            print(game.grid)
+
+        assert False
+
