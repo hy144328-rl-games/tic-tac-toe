@@ -4,9 +4,9 @@ import enum
 import numpy as np
 
 class Move(enum.Enum):
-    ONE = 1
-    TWO = 2
-    NONE = 0
+    ONE = "x"
+    TWO = "o"
+    NONE = "_"
 
 class Grid:
     def __init__(self):
@@ -23,6 +23,9 @@ class Grid:
             raise ValueError
 
         self.state[row, col] = turn
+
+    def __repr__(self):
+        return "".join([self.state[i, j].value for i in range(3) for j in range(3)])
 
 class Player:
     def __init__(self):
@@ -50,8 +53,10 @@ class Game:
 
 if __name__ == "__main__":
     game = Game()
+    print(repr(game.grid))
     print(game.grid.state)
 
     game.player_1.move(1, 1)
+    print(repr(game.grid))
     print(game.grid.state)
 
