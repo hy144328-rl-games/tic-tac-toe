@@ -24,3 +24,18 @@ class TestProbabilisticGame12(TestProbabilisticGame1):
     def player_2(self) -> model_player.StraightPlayer:
         return model_player.ProbabilisticPlayer()
 
+class TestTemporalDifferenceGame1(TestIntelligentGame):
+    @pytest.fixture
+    def player_1(self) -> model_player.StraightPlayer:
+        return model_player.TemporalDifferencePlayer()
+
+class TestTemporalDifferenceGame2(TestIntelligentGame):
+    @pytest.fixture
+    def player_2(self) -> model_player.StraightPlayer:
+        return model_player.TemporalDifferencePlayer()
+
+class TestTemporalDifferenceGame12(TestTemporalDifferenceGame1):
+    @pytest.fixture
+    def player_2(self) -> model_player.StraightPlayer:
+        return model_player.TemporalDifferencePlayer()
+
