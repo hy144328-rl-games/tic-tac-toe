@@ -46,3 +46,34 @@ class TestGame:
         game.player_1.move(2, 2)
         assert game.is_finished is True
 
+class TestIntelligentGame(TestGame):
+    @pytest.fixture
+    def player_1(self) -> model_player.StraightPlayer:
+        return model_player.StraightPlayer()
+
+    @pytest.fixture
+    def player_2(self) -> model_player.StraightPlayer:
+        return model_player.StraightPlayer()
+
+    @pytest.fixture
+    def game(
+        self,
+        grid: model_grid.Grid,
+        player_1: model_player.StraightPlayer,
+        player_2: model_player.StraightPlayer,
+    ) -> model_game.Game:
+        game = model_game.IntelligentGame()
+
+        game.set_grid(grid)
+        game.set_player_1(player_1)
+        game.set_player_2(player_2)
+
+        return game
+
+    def test_simulate(
+        self,
+        game: model_game.Game,
+    ):
+        game.simulate()
+        assert repr(game.grid) == "xoxoxox  "
+
