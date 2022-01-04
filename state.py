@@ -8,11 +8,11 @@ class Move(enum.Enum):
     TWO = 2
     NONE = 0
 
-class State:
+class Grid:
     def __init__(self):
-        self.m: np.ndarray = np.full((3, 3), Move.NONE)
+        self.state: np.ndarray = np.full((3, 3), Move.NONE)
 
 if __name__ == "__main__":
-    state = State()
-    print(state.m)
+    grid = Grid()
+    print(grid.state)
 
