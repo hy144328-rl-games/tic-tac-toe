@@ -6,9 +6,13 @@ import numpy as np
 class Move(enum.Enum):
     ONE = "x"
     TWO = "o"
-    NONE = "_"
+    NONE = " "
 
 class Grid:
+    no_pad = 1
+    col_sep = "|"
+    row_sep = "\n" + (5 + 6 * no_pad) * "-" + "\n"
+
     def __init__(self):
         self.state: np.ndarray = np.full((3, 3), Move.NONE)
 
@@ -26,6 +30,19 @@ class Grid:
 
     def __repr__(self):
         return "".join([self.state[i, j].value for i in range(3) for j in range(3)])
+
+    def __str__(self):
+        return "\n" + self.row_sep.join(
+            [
+                self.col_sep.join(
+                    [
+                        self.no_pad * " " + self.state[i, j].value + self.no_pad * " "
+                        for j in range(3)
+                    ]
+                )
+                for i in range(3)
+            ]
+        ) + "\n"
 
 class Player:
     def __init__(self):
@@ -53,10 +70,8 @@ class Game:
 
 if __name__ == "__main__":
     game = Game()
-    print(repr(game.grid))
-    print(game.grid.state)
+    print(game.grid)
 
     game.player_1.move(1, 1)
-    print(repr(game.grid))
-    print(game.grid.state)
+    print(game.grid)
 
