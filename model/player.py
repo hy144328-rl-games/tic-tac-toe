@@ -26,6 +26,10 @@ class Player:
     def is_winner(self) -> bool:
         return self.grid.in_line(self.turn)
 
+    @property
+    def is_loser(self) -> bool:
+        return self.grid.in_line(self.other_turn)
+
     def reset(self):
         ...
 

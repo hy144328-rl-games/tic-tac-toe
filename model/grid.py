@@ -17,9 +17,11 @@ class Grid:
 
     def set_player_1(self, player: "Player"):
         player.turn: Move = Move.ONE
+        player.other_turn: Move = Move.TWO
 
     def set_player_2(self, player: "Player"):
         player.turn: Move = Move.TWO
+        player.other_turn: Move = Move.ONE
 
     def move(self, turn: Move, row: int, col: int):
         if self.state[row, col] != Move.NONE:
