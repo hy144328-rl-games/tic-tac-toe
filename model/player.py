@@ -118,6 +118,12 @@ class TemporalDifferencePlayer(ProbabilisticPlayer, Learning):
         ProbabilisticPlayer.__init__(self)
         Learning.__init__(self, train)
 
+        self.alpha = 0.1
+        self.last_grid: Grid = Grid()
+
+    def reset(self):
+        self.last_grid = Grid()
+
     def pick_move(
         self,
         moves: list[tuple[int, int]],
@@ -136,5 +142,29 @@ class TemporalDifferencePlayer(ProbabilisticPlayer, Learning):
         ]
         random_move = random.choices(moves, weights)[0]
 
+        if max_move != random_move:
+            self.last_grid = None
+
         return random_move
+
+    def update(self):
+        if self.last_grid:
+            if self.is_winner:
+                self.table.set(
+                    self.grid,
+                    1.0,
+                )
+            elif self.is_loser:
+                self.table.set(
+                    self.grid,
+                    0.0,
+                )
+            val = self.table.get(self.grid)
+
+            last_val = self.table.get(self.last_grid)
+
+            self.table.set(
+                self.last_grid,
+                last_val + self.alpha * (val - last_val),
+            )
 

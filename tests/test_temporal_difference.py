@@ -48,10 +48,12 @@ class TestTemporalDifferenceGameTrain1(TestIntelligentGame):
         self,
         game: model_game.Game,
     ):
-        for _ in range(10):
+        for _ in range(10000):
             game.reset()
             game.simulate()
             print(game.grid)
+
+        print(game.player_1.table.table)
 
         assert False
 

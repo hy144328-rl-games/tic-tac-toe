@@ -5,7 +5,7 @@ import itertools
 
 from . import Move
 from .grid import Grid
-from .player import Player
+from .player import Player, Learning
 
 class Game:
     def set_grid(self, grid: Grid):
@@ -38,7 +38,13 @@ class IntelligentGame(Game, abc.ABC):
 
         for player_it in turns:
             player_it.play()
+            if isinstance(player_it, Learning):
+                player_it.update()
+                player_it.last_grid = Grid(self.grid)
 
             if self.is_finished:
+                player_it = next(turns)
+                if isinstance(player_it, Learning):
+                    player_it.update()
                 break
 
